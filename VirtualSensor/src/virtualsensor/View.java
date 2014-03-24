@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package virtualsensor;
+
+import java.io.*;
+import javax.imageio.IIOException;
 
 /**
  *
@@ -17,6 +19,7 @@ public class View extends javax.swing.JFrame {
      */
     public View() {
         initComponents();
+        
     }
 
     /**
@@ -50,9 +53,9 @@ public class View extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(oxigenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(oxigenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(oxigenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(oxigenValue, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(190, Short.MAX_VALUE))
@@ -72,8 +75,14 @@ public class View extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Method to update data to oxigen port when Oxigen sensor value is changed
+     *
+     * @param evt
+     */
     private void sliderUpdate(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderUpdate
-       oxigenValue.setText(Integer.toString(oxigenSlider.getValue()));
+        oxigenValue.setText(Integer.toString(oxigenSlider.getValue()));
+        writeToPort(oxigenSlider.getValue(), OXIGEN_SENSOR_PORT);
     }//GEN-LAST:event_sliderUpdate
 
 
@@ -82,4 +91,50 @@ public class View extends javax.swing.JFrame {
     private static final javax.swing.JSlider oxigenSlider = new javax.swing.JSlider();
     private static final javax.swing.JLabel oxigenValue = new javax.swing.JLabel();
     // End of variables declaration//GEN-END:variables
+
+    final int OXIGEN_SENSOR_PORT = 2;
+    final int NOISE_SENSOR_PORT = 3;
+    final int DUST_SENSOR_PORT = 4;
+
+    protected String filePath = "E:\\emu8086.io";
+    protected RandomAccessFile fileHandler;
+
+    /**
+     * Initialize file to write data for emu8086 input ports
+     */
+    protected void initFile() {
+        try {
+            File fileToWrite = new File(this.filePath);
+            this.fileHandler = new RandomAccessFile(fileToWrite, "rw");
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Method to write data to a specific port, data should be in range of 0 255
+     *
+     * @param data
+     * @param port
+     */
+    public void writeToPort(int data, int port) {
+        initFile();
+        try {
+            this.fileHandler.seek(port);
+            this.fileHandler.write(data);
+            closeFile();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            closeFile();
+        }
+    }
+
+    protected void closeFile() {
+        try {
+            this.fileHandler.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
