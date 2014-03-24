@@ -19,7 +19,7 @@ public class View extends javax.swing.JFrame {
      */
     public View() {
         initComponents();
-        
+
     }
 
     /**
@@ -30,6 +30,9 @@ public class View extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,20 +47,56 @@ public class View extends javax.swing.JFrame {
 
         oxigenValue.setText("50");
 
+        jLabel1.setText("Noise sensor");
+
+        noiseSlider.setMaximum(255);
+        noiseSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                updateNoise(evt);
+            }
+        });
+
+        noiseValue.setText("50");
+
+        dustSlider.setMaximum(255);
+        dustSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                updateDust(evt);
+            }
+        });
+
+        jLabel2.setText("Dust sensor");
+
+        dustValue.setText("50");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(oxigenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(20, 20, 20)
+                            .addComponent(oxigenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(oxigenValue)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(oxigenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(oxigenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(oxigenValue, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(noiseSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(noiseValue))
+                            .addComponent(dustSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dustValue)))))
                 .addContainerGap(190, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -69,7 +108,19 @@ public class View extends javax.swing.JFrame {
                     .addComponent(oxigenValue, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(oxigenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(noiseValue, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(noiseSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(dustValue, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dustSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
@@ -85,8 +136,24 @@ public class View extends javax.swing.JFrame {
         writeToPort(oxigenSlider.getValue(), OXIGEN_SENSOR_PORT);
     }//GEN-LAST:event_sliderUpdate
 
+    private void updateDust(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateDust
+        dustValue.setText(Integer.toString(dustSlider.getValue()));
+        writeToPort(dustSlider.getValue(), DUST_SENSOR_PORT);
+    }//GEN-LAST:event_updateDust
+
+    private void updateNoise(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateNoise
+        noiseValue.setText(Integer.toString(noiseSlider.getValue()));
+        writeToPort(noiseSlider.getValue(), NOISE_SENSOR_PORT);
+    }//GEN-LAST:event_updateNoise
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private static final javax.swing.JSlider dustSlider = new javax.swing.JSlider();
+    private static final javax.swing.JLabel dustValue = new javax.swing.JLabel();
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private static final javax.swing.JSlider noiseSlider = new javax.swing.JSlider();
+    private static final javax.swing.JLabel noiseValue = new javax.swing.JLabel();
     private final javax.swing.JLabel oxigenLabel = new javax.swing.JLabel();
     private static final javax.swing.JSlider oxigenSlider = new javax.swing.JSlider();
     private static final javax.swing.JLabel oxigenValue = new javax.swing.JLabel();
